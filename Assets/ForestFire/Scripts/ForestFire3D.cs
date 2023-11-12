@@ -12,12 +12,14 @@ public class ForestFire3D : MonoBehaviour
     public int gridSizeY; // y size of the grid
     public int nlight; // the number of trees to set alight at the start of the game
     public int xC, yC; // used for picking random x, y points
+    public int numberOfGhostsToSpawn;
+
 
     public int rockChance; // the percentage chance a cell is assigned as rock
     public int grassChance; // the percentage chance a cell is assigned as grass
 
     public GameObject cellPrefab; // gameobject prefab used to represent a cell on the grid   
-
+    public GameObject spirtPrefab; //****** new prefab to clone
     public ForestFireCell[,] forestFireCells = new ForestFireCell[0, 0]; // array of ForestFireCell objects
     public ForestFireCell.State[,] forestFireCellsNextGenStates = new ForestFireCell.State[0,0]; // array of cell states to be used in the next generation of the game 
 
@@ -42,6 +44,7 @@ public class ForestFire3D : MonoBehaviour
     {
         CreateGrid(gridSizeX, gridSizeY);
         RandomiseGrid();
+        spawnG();
         PauseGame(true);
         UpdateGridVisuals();
     }
@@ -303,7 +306,35 @@ public class ForestFire3D : MonoBehaviour
             xSpacing += 3;
         }
     }
+    private void spawnG()
+    {
 
+
+        //for (int i = 0; i < 6; i++)
+        //{
+
+        //    int randomCellX = UnityEngine.Random.Range(0, 39);
+        //    int randomCelly = UnityEngine.Random.Range(0, 39);
+
+        //    Instantiate(spirtPrefab, randomCellX, randomCelly,  
+        //}
+
+        for (int i = 0; i < numberOfGhostsToSpawn; i++)
+        {
+            int randomX = UnityEngine.Random.Range(0, gridSizeX);
+            int randomY = UnityEngine.Random.Range(0, gridSizeY);
+
+            GameObject cellToInstantiateOn = GameObject.Find("cell " + randomX + " " + randomY);
+
+            cellToInstantiateOn.GetComponent<ForestFireCell>().spiritPrefab.SetActive(true);
+
+            Debug.Log("Cell for instantiation: " +cellToInstantiateOn);
+        }
+    }
+         // ********clones the ghost prefab and selects random areas to spawn them at the begining of the game.
+
+
+    
     // udpate the grid cells according to their current state
     // this function will be called every frame of the game so the grid is always up to date 
     private void UpdateGridVisuals()
@@ -337,4 +368,5 @@ public class ForestFire3D : MonoBehaviour
             }
         }
     }
+
 }
